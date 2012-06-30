@@ -1,0 +1,51 @@
+* ABOUT
+    This project is a part of the seminar work on potential of GPUs at 
+    performing image processing related algorithms. Created by
+    
+    Srđan Rašić
+    srdan.rasic@fer.hr
+    Faculty of Electrical Engineering and Computing,
+    University of Zagreb, Croatia
+    
+    April 2012
+    
+
+* REQUIREMENTS
+
+    + Unix platfrom
+    + OpenCL compatible GPU (or CPU)
+    
+    + gcc (>=4.1)
+    + libpng (>=1.2.x) (apt-get install libpng12-dev)
+    + png++ (0.2.1, but other version should work well too) (apt-get install libpng++-dev)
+    + OpenCL SDK (>= 1.0, tested with v1.1)
+        - to get OpenCL dev files on
+            Linux:  Install proprietary drivers for NVIDIA/AMD GPUs and 'opencl-headers'
+                    or install Intel OpenCL SDK for Intel GPUs and CPUs
+            Mac OSX: Install XCode
+            Windows: Should be same as for Linux, but to compile this code you
+                     should deal with the sys/time.h and similar staff first :)
+
+
+* COMPILATION AND EXECUTION
+        
+    1. Change to directory in which this README is placed
+    2. Type 'make'
+    3. Type 'make run'
+    
+    
+* NOTES
+    + Executable is placed in directory './bin' and is named 'seminar'
+    + Executable MUST be executed from directory '.', or
+	in other words, from directory in which this README is placed
+    + To find out executable arguments, execute it without any
+    
+    
+* NOTES ON SOURCE CODE
+    + OpenCL framework subset in wrapped into a simple C++ wrapper called 'oclw'
+	You can use this wrapper to do basic staff on OpenCL compatible device.
+	
+	To get more info about the wrapper, consult:
+	./docs/html/index.html or
+	./docs/latex/refman.pdf
+

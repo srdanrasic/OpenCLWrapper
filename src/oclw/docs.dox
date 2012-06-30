@@ -1,0 +1,77 @@
+/**
+\mainpage OpenCL Wrapper
+
+\section intro_sec Introduction
+
+The OCLW is a wrapper of the OpenCL framework intended to simplify usage of OpenCL
+for educational use. It wraps only a subset of the OpenCL framework.
+You can use this wrapper to do basic operations on the OpenCL compatible device.
+
+This project is a part of the seminar work on potential of GPUs at 
+performing image processing related algorithms.
+
+Author:\n
+Srđan Rašić\n
+srdan.rasic@fer.hr\n
+Faculty of Electrical Engineering and Computing,
+University of Zagreb, Croatia
+
+April 2012
+
+\section tut How to use OCLW
+
+\subsection basic Basic concept
+
+1. Use 'Controler' singleton to initialize OpenCL (just get reference to shared object)
+2. For any memory object (eg array) create corresponding 'MemoryBuffer' object
+3. Load and compile OpenCL code using 'Program' object
+4. Create 'Kernel' object(s) using previously created 'Program' object
+5. Perform tasks by executing 'Kernel' object
+
+\subsection xmlp Example
+
+The following shows a simple OpenCL kernel that just sets each element of an array to its absolute value:
+    
+<em>simple_program.cl:</em>
+\code
+__kernel void simple_kernel(__global int* data) {
+    unsigned int u = get_global_id(0);
+
+    data[u] = abs(data[u]);
+}
+\endcode
+
+To use that kernel on some array, do something like this:    
+\code
+int data[1024];
+// Load data for processing to 'data' array
+
+// Get reference to Controller object
+oclw::Controller* controller = oclw::Controller::shared();
+
+// Create corresponding MemoryBuffer object for 'data' array
+oclw::MemoryBuffer* data_gpu = controller->createMemoryBuffer(oclw::MemoryBuffer::READ_WRITE, sizeof(int)*1024);
+
+// Transfer 'data' array to GPU
+data_gpu->writeData(data, sizeof(int)*1024);
+
+// Create and compile Program from source
+oclw::Program* program = controller->createProgramObject();
+program->compileFromSourceFile("simple_program.cl");
+
+// Get Kernel
+oclw::Kernel* kernel = program->createKernel("simple_kernel");
+
+// Set Kernel argument
+kernel->setArgument(0, *data_gpu);
+
+// Execture Kernel
+kernel->execute(oclw::Kernel::NDRange::range1D(1024));
+
+// Get processed data back
+data_gpu->readData(data, sizeof(int)*1024);
+
+// Array 'data' now contains data processed by 'simple_kernel'
+\endcode
+    
+*/
